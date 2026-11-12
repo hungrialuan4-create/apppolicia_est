@@ -1,0 +1,24 @@
+-- Agendamento das rotinas automáticas. Renomeie para 0003_cron.sql DEPOIS de:
+--   1) publicar as funções:  supabase functions deploy sync-news check-sources --no-verify-jwt
+--   2) definir o segredo:    supabase secrets set CRON_SECRET=<um-texto-longo-aleatorio>
+--   3) ativar as extensões pg_cron e pg_net (Dashboard > Database > Extensions)
+-- Troque <PROJECT_REF> e <CRON_SECRET> abaixo.
+
+create extension if not exists pg_cron;
+create extension if not exists pg_net;
+
+-- Notícias: a cada 2 horas
+select cron.schedule('sync-news', '0 */2 * * *', $$
+  select net.http_post(
+    url := 'https://<PROJECT_REF>.supabase.co/functions/v1/sync-news',
+    headers := jsonb_build_object('Content-Type','application/json','x-cron-secret','<CRON_SECRET>'),
+    body := '{}'::jsonb);
+$$);
+
+-- Verificação dos links das fontes salariais: toda segunda-feira às 06:00 UTC
+select cron.schedule('check-sources', '0 6 * * 1', $$
+  select net.http_post(
+    url := 'https://<PROJECT_REF>.supabase.co/functions/v1/check-sources',
+    headers := jsonb_build_object('Content-Type','application/json','x-cron-secret','<CRON_SECRET>'),
+    body := '{}'::jsonb);
+$$);

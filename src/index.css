@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+html, body, #root { height: 100%; }
+body {
+  @apply bg-ink text-slate-200 font-sans antialiased;
+  background-image:
+    radial-gradient(900px 500px at 85% -10%, rgba(59,130,246,.12), transparent 60%),
+    radial-gradient(700px 400px at -10% 110%, rgba(212,175,55,.07), transparent 60%);
+  background-attachment: fixed;
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-white/10 bg-navy-800/80 backdrop-blur p-4 sm:p-5 animate-fadeUp; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-primary { @apply btn bg-brand hover:bg-brand-deep text-white; }
+  .btn-gold { @apply btn bg-gold text-ink hover:bg-gold-soft; }
+  .btn-ghost { @apply btn border border-white/10 text-slate-300 hover:bg-white/5; }
+  .input { @apply w-full rounded-xl border border-white/10 bg-navy-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand/60; }
+  .label { @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400; }
+  .th { @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-400; }
+  .td { @apply px-3 py-2 text-sm align-top; }
+}
